@@ -10,7 +10,7 @@ import UIKit
 
 class PhotoView: UIView {
 
-    static var nib: UINib { return UINib(nibName: "PhotoView", bundle: Bundle(for: PhotoView.self)) }
+    static var nib: UINib { return UINib(nibName: "PhotoView", bundle: Bundle.local) }
 
     private var imageDownloader = ImageDownloader()
     private var screenScale: CGFloat { return UIScreen.main.scale }
@@ -78,12 +78,10 @@ class PhotoView: UIView {
     }
 
     private func sizedImageURL(from url: URL) -> URL {
-        let width: CGFloat = frame.width * screenScale
-        let height: CGFloat = frame.height * screenScale
-
+        layoutIfNeeded()
         return url.appending(queryItems: [
-            URLQueryItem(name: "max-w", value: "\(width)"),
-            URLQueryItem(name: "max-h", value: "\(height)")
+            URLQueryItem(name: "w", value: "\(frame.width)"),
+            URLQueryItem(name: "dpr", value: "\(Int(screenScale))")
         ])
     }
 
